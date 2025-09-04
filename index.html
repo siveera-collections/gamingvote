@@ -19,8 +19,8 @@
     <p>Enter Details To Proceed</p>
 
     <input type="text" id="name" placeholder="Full Name" required>
-    <input type="text" id="age" placeholder="Age" required>
-    <input type="text" id="EmailMobile" placeholder="Email/Mobile No" required>
+    <input type="number" id="age" placeholder="Age" required>
+    <input type="text" id="EmailMobile" placeholder="Email or Mobile No" required>
 
     <button onclick="login()">Continue</button>
   </div>
@@ -37,12 +37,33 @@
       const age = document.getElementById("age").value.trim();
       const EmailMobile = document.getElementById("EmailMobile").value.trim();
 
-      if (name && age && EmailMobile) {
-        localStorage.setItem("user", JSON.stringify({ name, age, EmailMobile}));
-        window.location.href = "games.html"; // go to game selection
-      } else {
+      if (!name || !age || !EmailMobile) {
         alert("⚠️ Please fill all fields!");
+        return;
       }
+
+      // ✅ Email pattern check
+      const emailPattern = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/;
+      // ✅ Mobile pattern check (10 digits only)
+      const mobilePattern = /^[0-9]{10}$/;
+
+      if (!(emailPattern.test(EmailMobile) || mobilePattern.test(EmailMobile))) {
+        alert("⚠️ Please enter a valid Email OR a 10-digit Mobile number.");
+        return;
+      }
+
+      // Check if new user is different → reset vote
+      const oldUser = JSON.parse(localStorage.getItem("user"));
+      if (!oldUser || oldUser.EmailMobile !== EmailMobile || oldUser.name !== name) {
+        localStorage.removeItem("voted");
+      }
+
+      // Save user
+      const newUser = { name, age, EmailMobile };
+      localStorage.setItem("user", JSON.stringify(newUser));
+
+      // Redirect
+      window.location.href = "games.html";
     }
   </script>
 </body>
