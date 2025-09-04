@@ -1,111 +1,64 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Vote - Free Fire</title>
-  <link rel="stylesheet" href="style.css">
-  <style>
-    .top-nav {
-      display: flex;
-      justify-content: space-between;
-      margin: 10px 0;
-    }
-    .top-nav button {
-      padding: 6px 12px;
-      cursor: pointer;
-      border-radius: 5px;
-      border: none;
-      background: #ff4d4d;
-      color: #fff;
-    }
-    .top-nav button:hover {
-      background: #ff7700;
-    }
-  </style>
-</head>
-<body id="voteBody" class="ff-bg">
-  <!-- Top Header -->
-  <header class="site-header">
-    <img src="WhatsApp Image 2025-09-04 at 14.25.11_70c9b7fd.jpg" alt="Esports Collab Logo" class="logo">
-    <h1>Vote Your Favourite Free Fire Player</h1>
-  </header>
+<script>
+const user = JSON.parse(localStorage.getItem("user"));
+if (!user) {
+  alert("⚠️ Please login first!");
+  window.location.href = "index.html";
+}
 
-  <!-- Navigation -->
-  <div class="top-nav">
-    <button onclick="goHome()">🏠 Home</button>
-    <button onclick="signOut()">🚪 Sign Out</button>
-  </div>
+// Get buttons
+const homeBtn = document.querySelector('.top-nav button:nth-child(1)');
+const signOutBtn = document.querySelector('.top-nav button:nth-child(2)');
 
-  <!-- Voting Section -->
-  <div class="players" id="playersList">
-    <div class="player-card">
-      <h2>Player 1</h2>
-      <p>Squad Alpha</p>
-      <button class="ff-btn" onclick="castVote('Player 1')">Vote</button>
-    </div>
-    <div class="player-card">
-      <h2>Player 2</h2>
-      <p>Squad Beta</p>
-      <button class="ff-btn" onclick="castVote('Player 2')">Vote</button>
-    </div>
-    <div class="player-card">
-      <h2>Player 3</h2>
-      <p>Squad Gamma</p>
-      <button class="ff-btn" onclick="castVote('Player 3')">Vote</button>
-    </div>
-  </div>
+// Get selected game from localStorage (default to Free Fire)
+const selectedGame = localStorage.getItem("selectedGame") || "Free Fire";
 
-  <!-- Footer -->
-  <footer class="site-footer">
-    <p>© 2023 Esports Collab. All rights reserved.</p>
-  </footer>
+// Set body class and button colors dynamically
+const body = document.getElementById("voteBody");
+if (selectedGame === "Free Fire") {
+  body.className = "ff-bg";
+  homeBtn.style.background = signOutBtn.style.background = "#ff4d4d"; // FF red
+} else if (selectedGame === "BGMI") {
+  body.className = "bgmi-bg";
+  homeBtn.style.background = signOutBtn.style.background = "#ffb84d"; // BGMI orange
+} else if (selectedGame === "Call of Duty") {
+  body.className = "cod-bg";
+  homeBtn.style.background = signOutBtn.style.background = "#4d79ff"; // COD blue
+}
 
-  <!-- Script -->
-  <script>
-    const user = JSON.parse(localStorage.getItem("user"));
-    if (!user) {
-      alert("⚠️ Please login first!");
-      window.location.href = "index.html";
-    }
+// Hover effect for buttons
+[homeBtn, signOutBtn].forEach(btn => {
+  btn.addEventListener("mouseover", () => btn.style.opacity = "0.8");
+  btn.addEventListener("mouseout", () => btn.style.opacity = "1");
+});
 
-    function castVote(playerId) {
-      // Check if user already voted
-      if (localStorage.getItem("hasVotedFF") === "true") {
-        const votedPlayer = localStorage.getItem("votedPlayer");
-        alert("⚠️ You have already voted for " + votedPlayer + " in Free Fire!");
-        return;
-      }
+// Voting logic
+function castVote(playerId) {
+  if (localStorage.getItem("hasVotedFF") === "true") {
+    const votedPlayer = localStorage.getItem("votedPlayer");
+    alert("⚠️ You have already voted for " + votedPlayer + " in " + selectedGame + "!");
+    return;
+  }
+  localStorage.setItem("hasVotedFF", "true");
+  localStorage.setItem("votedPlayer", playerId);
 
-      // Save vote
-      localStorage.setItem("hasVotedFF", "true");
-      localStorage.setItem("votedPlayer", playerId);
+  alert("✅ Your vote for " + playerId + " has been submitted!");
+  document.querySelectorAll(".ff-btn").forEach(btn => btn.disabled = true);
+}
 
-      alert("✅ Your vote for " + playerId + " has been submitted!");
+// Home & Sign Out
+function goHome() { window.location.href = "index.html"; }
+function signOut() {
+  if (confirm("Are you sure you want to sign out?")) {
+    localStorage.removeItem("user");
+    localStorage.removeItem("selectedGame");
+    window.location.href = "index.html";
+  }
+}
 
-      // Disable all vote buttons
-      document.querySelectorAll(".ff-btn").forEach(btn => btn.disabled = true);
-    }
-
-    // Home button
-    function goHome() {
-      window.location.href = "index.html";
-    }
-
-    // Sign Out button
-    function signOut() {
-      if (confirm("Are you sure you want to sign out?")) {
-        localStorage.removeItem("user");
-        window.location.href = "index.html";
-      }
-    }
-
-    // Disable buttons on load if already voted
-    window.addEventListener("DOMContentLoaded", () => {
-      if (localStorage.getItem("hasVotedFF") === "true") {
-        document.querySelectorAll(".ff-btn").forEach(btn => btn.disabled = true);
-      }
-    });
-  </script>
-</body>
-</html>
+// Disable buttons if already voted
+window.addEventListener("DOMContentLoaded", () => {
+  if (localStorage.getItem("hasVotedFF") === "true") {
+    document.querySelectorAll(".ff-btn").forEach(btn => btn.disabled = true);
+  }
+});
+</script>
