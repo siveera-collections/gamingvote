@@ -5,6 +5,28 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Select Game</title>
   <link rel="stylesheet" href="style.css">
+  <style>
+    .games {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      margin-top: 20px;
+    }
+    .games button {
+      padding: 12px;
+      font-size: 18px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: bold;
+      background: #ff4d4d;
+      color: #fff;
+      transition: 0.3s;
+    }
+    .games button:hover {
+      background: #ff7700;
+    }
+  </style>
 </head>
 <body id="gamesBody" class="shared-bg">
   <!-- Top Logo Header -->
@@ -16,7 +38,7 @@
   <!-- Game Selection -->
   <div class="form-container">
     <h1>Select A Game To Vote Your Favourite Player</h1>
-    <p>Welcome, <span id="userName"></span></p>
+    <p>Welcome, <span id="userName"></span> 👋</p>
     <div class="games">
       <button onclick="selectGame('Free Fire')">Garena Free Fire</button>
       <button onclick="selectGame('BGMI')">BGMI</button>
@@ -26,30 +48,40 @@
 
   <!-- Footer -->
   <footer class="site-footer">
-    <p>© 2025 Esports Collab. All rights reserved.</p>
+    <p>© 2023 Esports Collab. All rights reserved.</p>
   </footer>
 
   <!-- Script -->
   <script>
+    // Check login
     const user = JSON.parse(localStorage.getItem("user"));
     if (!user) {
-      // if no login info, redirect to index
       alert("⚠️ Please login first!");
       window.location.href = "index.html";
     } else {
-      document.getElementById("userName").innerText = user.name;
+      document.getElementById("userName").innerText = user.name || "Player";
     }
 
+    // If already selected a game, redirect accordingly
+    const alreadySelected = localStorage.getItem("selectedGame");
+    if (alreadySelected) {
+      if (alreadySelected === "Free Fire") {
+        window.location.href = "vote.html";
+      } else {
+        alert("You already selected " + alreadySelected + " earlier!");
+        window.location.href = "index.html";
+      }
+    }
+
+    // Game selection logic
     function selectGame(game) {
       localStorage.setItem("selectedGame", game);
 
       if (game === "Free Fire") {
-        // allow voting
         window.location.href = "vote.html";
       } else {
-        // block voting for other games
-        alert("✅ Squad Created for " + game + "! No voting required.");
-        window.location.href = "index.html"; // back to login/home
+        alert("Squad Created for " + game + "! No voting required.");
+        window.location.href = "index.html";
       }
     }
   </script>
