@@ -16,6 +16,7 @@
   <!-- Game Title -->
   <header>
     <h1 id="gameTitle"></h1>
+    <p>Welcome, <span id="userName"></span> 👋</p>
     <p>Vote for the best player!</p>
   </header>
 
@@ -26,7 +27,7 @@
       <p>Game ID: FF12345</p>
       <p>Experience: 2 years</p>
       <p>University ID: UNI001</p>
-      <button onclick="vote('player1')">Vote</button>
+      <button onclick="vote('Player One')">Vote</button>
     </div>
 
     <div class="player-card">
@@ -34,7 +35,7 @@
       <p>Game ID: BG98765</p>
       <p>Experience: 3 years</p>
       <p>University ID: UNI002</p>
-      <button onclick="vote('player2')">Vote</button>
+      <button onclick="vote('Player Two')">Vote</button>
     </div>
 
     <div class="player-card">
@@ -42,7 +43,7 @@
       <p>Game ID: COD54321</p>
       <p>Experience: 4 years</p>
       <p>University ID: UNI003</p>
-      <button onclick="vote('player3')">Vote</button>
+      <button onclick="vote('Player Three')">Vote</button>
     </div>
 
     <div class="player-card">
@@ -50,7 +51,7 @@
       <p>Game ID: FF67890</p>
       <p>Experience: 1 year</p>
       <p>University ID: UNI004</p>
-      <button onclick="vote('player4')">Vote</button>
+      <button onclick="vote('Player Four')">Vote</button>
     </div>
   </main>
 
@@ -61,9 +62,20 @@
 
   <!-- Script -->
   <script>
+    const user = JSON.parse(localStorage.getItem("user"));
     const selectedGame = localStorage.getItem("selectedGame");
-    document.getElementById("gameTitle").innerText =
-      "Voting - " + selectedGame;
+
+    // Redirect if no login
+    if (!user) {
+      alert("⚠️ Please login first!");
+      window.location.href = "index.html";
+    }
+
+    // Show username
+    document.getElementById("userName").innerText = user?.name || "";
+
+    // Show game
+    document.getElementById("gameTitle").innerText = "Voting - " + selectedGame;
 
     // Set background dynamically
     const body = document.getElementById("voteBody");
@@ -73,12 +85,18 @@
 
     // Voting logic
     function vote(player) {
-      if (localStorage.getItem("voted")) {
+      const currentUser = localStorage.getItem("user");
+      const alreadyVoted = localStorage.getItem("votedUser");
+
+      if (alreadyVoted && alreadyVoted === currentUser) {
         alert("⚠️ Voting capacity reached! You can only vote once.");
         return;
       }
+
+      localStorage.setItem("votedUser", currentUser);
       localStorage.setItem("voted", player);
-      alert("✅ Thank you! Your vote for " + player + " has been recorded.");
+
+      alert("Thank you, " + user.name + "! Your vote for " + player + " has been recorded.");
       document.querySelectorAll("button").forEach(btn => btn.disabled = true);
     }
   </script>
