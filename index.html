@@ -6,11 +6,14 @@
   <title>Esports Voting Portal</title>
   <link rel="stylesheet" href="style.css">
 </head>
-<body class="shared-bg">
+<body id="loginBody" class="shared-bg">
+  <!-- Top Logo Header -->
   <header class="site-header">
-  <img src="logo.png" alt="Esports Collab Logo" class="logo">
-  <h1>Esports Collab Voting</h1>
-</header>
+    <img src="logo.png" alt="Esports Collab Logo" class="logo">
+    <h1>Esports Collab Voting</h1>
+  </header>
+
+  <!-- Login Form -->
   <div class="form-container">
     <h1>🎮 Esports Voting</h1>
     <p>Login to continue</p>
@@ -23,23 +26,26 @@
     <button onclick="login()">Continue</button>
   </div>
 
+  <!-- Footer -->
+  <footer class="site-footer">
+    <p>© 2025 Esports Collab. All rights reserved.</p>
+  </footer>
+
+  <!-- Script -->
   <script>
     function login() {
-      const name = document.getElementById("name").value;
-      const universityId = document.getElementById("universityId").value;
-      const gameId = document.getElementById("gameId").value;
-      const exp = document.getElementById("experience").value;
+      const name = document.getElementById("name").value.trim();
+      const universityId = document.getElementById("universityId").value.trim();
+      const gameId = document.getElementById("gameId").value.trim();
+      const exp = document.getElementById("experience").value.trim();
 
       if (name && universityId && gameId && exp) {
         localStorage.setItem("user", JSON.stringify({ name, universityId, gameId, exp }));
         window.location.href = "games.html"; // go to game selection
       } else {
-        alert("Please fill all fields!");
+        alert("⚠️ Please fill all fields!");
       }
     }
   </script>
 </body>
-  <footer class="site-footer">
-  <p>© 2025 Esports Collab. All rights reserved.</p>
-</footer>
 </html>
