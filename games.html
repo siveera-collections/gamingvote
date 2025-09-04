@@ -3,46 +3,33 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Select Game</title>
+  <title>Vote - Free Fire</title>
   <link rel="stylesheet" href="style.css">
-  <style>
-    .games {
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-      margin-top: 20px;
-    }
-    .games button {
-      padding: 12px;
-      font-size: 18px;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-      font-weight: bold;
-      background: #ff4d4d;
-      color: #fff;
-      transition: 0.3s;
-    }
-    .games button:hover {
-      background: #ff7700;
-    }
-  </style>
 </head>
-<body id="gamesBody" class="shared-bg">
-  <!-- Top Logo Header -->
+<body id="voteBody" class="ff-bg">
+  <!-- Top Header -->
   <header class="site-header">
     <img src="WhatsApp Image 2025-09-04 at 14.25.11_70c9b7fd.jpg" alt="Esports Collab Logo" class="logo">
-    <h1>eSports.telKLT x IGTC</h1>
+    <h1>Vote Your Favourite Free Fire Player</h1>
   </header>
 
-  <!-- Game Selection -->
-  <div class="form-container">
-    <h1>Select A Game To Vote Your Favourite Player</h1>
-    <p>Welcome, <span id="userName"></span> 👋</p>
-    <div class="games">
-      <button onclick="selectGame('Free Fire')">Garena Free Fire</button>
-      <button onclick="selectGame('BGMI')">BGMI</button>
-      <button onclick="selectGame('Call of Duty')">Call of Duty</button>
+  <!-- Voting Section -->
+  <div class="players" id="playersList">
+    <!-- Example players (replace with your real data) -->
+    <div class="player-card">
+      <h2>Player 1</h2>
+      <p>Squad Alpha</p>
+      <button class="ff-btn" onclick="castVote('Player 1')">Vote</button>
+    </div>
+    <div class="player-card">
+      <h2>Player 2</h2>
+      <p>Squad Beta</p>
+      <button class="ff-btn" onclick="castVote('Player 2')">Vote</button>
+    </div>
+    <div class="player-card">
+      <h2>Player 3</h2>
+      <p>Squad Gamma</p>
+      <button class="ff-btn" onclick="castVote('Player 3')">Vote</button>
     </div>
   </div>
 
@@ -53,28 +40,26 @@
 
   <!-- Script -->
   <script>
-  const user = JSON.parse(localStorage.getItem("user"));
-  if (!user) {
-    // if no login info, redirect to index
-    alert("⚠️Please login first!");
-    window.location.href = "index.html";
-  } else {
-    document.getElementById("userName").innerText = user.name;
-  }
-
-  function selectGame(game) {
-    localStorage.setItem("selectedGame", game);
-
-    if (game === "Free Fire") {
-      // ✅ Only Free Fire goes for voting
-      window.location.href = "vote.html";
-    } else {
-      // ❌ BGMI & COD → squad only
-      alert("Squad Created for " + game + "! Voting Closed.");
-      // Stay on same page instead of redirecting
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (!user) {
+      alert("⚠️ Please login first!");
+      window.location.href = "index.html";
     }
-  }
-</script>
 
+    function castVote(playerId) {
+      // Check if user already voted
+      if (localStorage.getItem("hasVotedFF") === "true") {
+        const votedPlayer = localStorage.getItem("votedPlayer");
+        alert("⚠️ You have already voted for " + votedPlayer + " in Free Fire!");
+        return;
+      }
+
+      // Save vote
+      localStorage.setItem("hasVotedFF", "true");
+      localStorage.setItem("votedPlayer", playerId);
+
+      alert("Your vote for " + playerId + " has been submitted!");
+    }
+  </script>
 </body>
 </html>
