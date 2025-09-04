@@ -135,3 +135,32 @@ header p {
   margin-top: 5px;
   font-size: 15px;
 }
+/* Header */
+.site-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  padding: 15px;
+  background: rgba(0, 0, 0, 0.85);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.site-header .logo {
+  height: 50px;
+  width: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* Footer */
+.site-footer {
+  text-align: center;
+  padding: 15px;
+  margin-top: auto;
+  background: rgba(0, 0, 0, 0.85);
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  font-size: 14px;
+  color: #aaa;
+}
+
