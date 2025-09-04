@@ -1,3 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Select Game - eSports Voting</title>
+<link rel="stylesheet" href="style.css">
+<style>
+  .games {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    margin-top: 30px;
+  }
+  .game-card {
+    width: 200px;
+    text-align: center;
+    padding: 15px;
+    border-radius: 10px;
+    cursor: pointer;
+    color: #fff;
+    font-weight: bold;
+    transition: transform 0.2s;
+  }
+  .game-card:hover {
+    transform: scale(1.05);
+  }
+  .ff-bg { background: #ff4d4d; }
+  .bgmi-bg { background: #ffb84d; }
+  .cod-bg { background: #4d79ff; }
+</style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="site-header">
+    <img src="WhatsApp Image 2025-09-04 at 14.25.11_70c9b7fd.jpg" alt="Logo" class="logo">
+    <h1>eSports.telKLT x IGTC</h1>
+    <p>Welcome, <span id="userName"></span> 👋</p>
+  </header>
+
+  <!-- Game Selection -->
+  <div class="games">
+    <div class="game-card ff-bg" onclick="selectGame('Free Fire')">Free Fire</div>
+    <div class="game-card bgmi-bg" onclick="selectGame('BGMI')">BGMI</div>
+    <div class="game-card cod-bg" onclick="selectGame('Call of Duty')">Call of Duty</div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <p>© 2023 eSports.telKLT x IGTC. All rights reserved.</p>
+  </footer>
+
 <script>
 const user = JSON.parse(localStorage.getItem("user"));
 if (!user) {
@@ -5,60 +58,12 @@ if (!user) {
   window.location.href = "index.html";
 }
 
-// Get buttons
-const homeBtn = document.querySelector('.top-nav button:nth-child(1)');
-const signOutBtn = document.querySelector('.top-nav button:nth-child(2)');
+document.getElementById("userName").innerText = user.name;
 
-// Get selected game from localStorage (default to Free Fire)
-const selectedGame = localStorage.getItem("selectedGame") || "Free Fire";
-
-// Set body class and button colors dynamically
-const body = document.getElementById("voteBody");
-if (selectedGame === "Free Fire") {
-  body.className = "ff-bg";
-  homeBtn.style.background = signOutBtn.style.background = "#ff4d4d"; // FF red
-} else if (selectedGame === "BGMI") {
-  body.className = "bgmi-bg";
-  homeBtn.style.background = signOutBtn.style.background = "#ffb84d"; // BGMI orange
-} else if (selectedGame === "Call of Duty") {
-  body.className = "cod-bg";
-  homeBtn.style.background = signOutBtn.style.background = "#4d79ff"; // COD blue
+function selectGame(gameName) {
+  localStorage.setItem("selectedGame", gameName);
+  window.location.href = "vote.html";
 }
-
-// Hover effect for buttons
-[homeBtn, signOutBtn].forEach(btn => {
-  btn.addEventListener("mouseover", () => btn.style.opacity = "0.8");
-  btn.addEventListener("mouseout", () => btn.style.opacity = "1");
-});
-
-// Voting logic
-function castVote(playerId) {
-  if (localStorage.getItem("hasVotedFF") === "true") {
-    const votedPlayer = localStorage.getItem("votedPlayer");
-    alert("⚠️ You have already voted for " + votedPlayer + " in " + selectedGame + "!");
-    return;
-  }
-  localStorage.setItem("hasVotedFF", "true");
-  localStorage.setItem("votedPlayer", playerId);
-
-  alert("✅ Your vote for " + playerId + " has been submitted!");
-  document.querySelectorAll(".ff-btn").forEach(btn => btn.disabled = true);
-}
-
-// Home & Sign Out
-function goHome() { window.location.href = "index.html"; }
-function signOut() {
-  if (confirm("Are you sure you want to sign out?")) {
-    localStorage.removeItem("user");
-    localStorage.removeItem("selectedGame");
-    window.location.href = "index.html";
-  }
-}
-
-// Disable buttons if already voted
-window.addEventListener("DOMContentLoaded", () => {
-  if (localStorage.getItem("hasVotedFF") === "true") {
-    document.querySelectorAll(".ff-btn").forEach(btn => btn.disabled = true);
-  }
-});
 </script>
+</body>
+</html>
