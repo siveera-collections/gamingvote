@@ -47,18 +47,20 @@
   </main>
 
   <script>
-    document.getElementById("gameTitle").innerText =
-      "Voting - " + localStorage.getItem("selectedGame");
+  document.getElementById("gameTitle").innerText =
+    "Voting - " + localStorage.getItem("selectedGame");
 
-    function vote(player) {
-      if (localStorage.getItem("voted")) {
-        alert("You have already voted!");
-        return;
-      }
-      localStorage.setItem("voted", player);
-      alert("Thank you! Your vote for " + player + " has been recorded.");
-      document.querySelectorAll("button").forEach(btn => btn.disabled = true);
+  function vote(player) {
+    if (localStorage.getItem("voted")) {
+      alert("⚠️ Voting capacity reached! You can only vote once.");
+      return;
     }
-  </script>
+
+    localStorage.setItem("voted", player);
+    alert("✅ Thank you! Your vote for " + player + " has been recorded.");
+    document.querySelectorAll("button").forEach(btn => btn.disabled = true);
+  }
+</script>
+
 </body>
 </html>
