@@ -20,12 +20,15 @@
     color: #fff;
     font-weight: bold;
   }
+  .top-nav button:hover {
+    opacity: 0.8;
+  }
 </style>
 </head>
 <body id="voteBody">
-  <!-- Top Logo Header -->
+  <!-- Logo -->
   <header class="site-header">
-    <img src="WhatsApp Image 2025-09-04 at 14.25.11_70c9b7fd.jpg" alt="Esports Collab Logo" class="logo">
+    <img src="WhatsApp Image 2025-09-04 at 14.25.11_70c9b7fd.jpg" alt="Logo" class="logo">
     <h1>eSports.telKLT x IGTC</h1>
   </header>
 
@@ -45,32 +48,19 @@
   <!-- Player Cards -->
   <main class="players">
     <div class="player-card">
-      <h2>Player One</h2>
-      <p>Game ID: FF12345</p>
-      <p>Experience: 2 years</p>
-      <p>University ID: UNI001</p>
-      <button onclick="vote('Player One')">Vote</button>
+      <h2>Player 1</h2>
+      <p>Squad Alpha</p>
+      <button class="vote-btn" onclick="castVote('Player 1')">Vote</button>
     </div>
     <div class="player-card">
-      <h2>Player Two</h2>
-      <p>Game ID: BG98765</p>
-      <p>Experience: 3 years</p>
-      <p>University ID: UNI002</p>
-      <button onclick="vote('Player Two')">Vote</button>
+      <h2>Player 2</h2>
+      <p>Squad Beta</p>
+      <button class="vote-btn" onclick="castVote('Player 2')">Vote</button>
     </div>
     <div class="player-card">
-      <h2>Player Three</h2>
-      <p>Game ID: COD54321</p>
-      <p>Experience: 4 years</p>
-      <p>University ID: UNI003</p>
-      <button onclick="vote('Player Three')">Vote</button>
-    </div>
-    <div class="player-card">
-      <h2>Player Four</h2>
-      <p>Game ID: FF67890</p>
-      <p>Experience: 1 year</p>
-      <p>University ID: UNI004</p>
-      <button onclick="vote('Player Four')">Vote</button>
+      <h2>Player 3</h2>
+      <p>Squad Gamma</p>
+      <button class="vote-btn" onclick="castVote('Player 3')">Vote</button>
     </div>
   </main>
 
@@ -79,75 +69,65 @@
     <p>© 2023 eSports.telKLT x IGTC. All rights reserved.</p>
   </footer>
 
-  <!-- Script -->
-  <script>
-    const user = JSON.parse(localStorage.getItem("user"));
-    const selectedGame = localStorage.getItem("selectedGame") || "Free Fire";
+<script>
+const user = JSON.parse(localStorage.getItem("user"));
+const selectedGame = localStorage.getItem("selectedGame") || "Free Fire";
 
-    if (!user) {
-      alert("⚠️ Please login first!");
-      window.location.href = "index.html";
-    }
+if (!user) {
+  alert("⚠️ Please login first!");
+  window.location.href = "index.html";
+}
 
-    document.getElementById("userName").innerText = user?.name || "";
-    document.getElementById("gameTitle").innerText = "Voting - " + selectedGame;
+document.getElementById("userName").innerText = user.name;
+document.getElementById("gameTitle").innerText = "Voting - " + selectedGame;
 
-    // Set body background & button colors dynamically
-    const body = document.getElementById("voteBody");
-    const homeBtn = document.getElementById("homeBtn");
-    const signOutBtn = document.getElementById("signOutBtn");
+const body = document.getElementById("voteBody");
+const homeBtn = document.getElementById("homeBtn");
+const signOutBtn = document.getElementById("signOutBtn");
 
-    if (selectedGame === "Free Fire") {
-      body.className = "ff-bg";
-      homeBtn.style.background = signOutBtn.style.background = "#ff4d4d";
-    } else if (selectedGame === "BGMI") {
-      body.className = "bgmi-bg";
-      homeBtn.style.background = signOutBtn.style.background = "#ffb84d";
-    } else if (selectedGame === "Call of Duty") {
-      body.className = "cod-bg";
-      homeBtn.style.background = signOutBtn.style.background = "#4d79ff";
-    }
+// Dynamic background & button colors
+let color = "#ff4d4d"; // FF red
+if (selectedGame === "Free Fire") {
+  body.className = "ff-bg";
+  color = "#ff4d4d";
+} else if (selectedGame === "BGMI") {
+  body.className = "bgmi-bg";
+  color = "#ffb84d";
+} else if (selectedGame === "Call of Duty") {
+  body.className = "cod-bg";
+  color = "#4d79ff";
+}
+homeBtn.style.background = signOutBtn.style.background = color;
 
-    // Hover effect
-    [homeBtn, signOutBtn].forEach(btn => {
-      btn.addEventListener("mouseover", () => btn.style.opacity = "0.8");
-      btn.addEventListener("mouseout", () => btn.style.opacity = "1");
-    });
+// Voting logic
+function castVote(playerId) {
+  const alreadyVoted = localStorage.getItem("votedUser");
+  if (alreadyVoted && alreadyVoted === user.EmailMobile) {
+    alert("⚠️ You have already voted!");
+    return;
+  }
+  localStorage.setItem("votedUser", user.EmailMobile);
+  localStorage.setItem("votedPlayer", playerId);
+  alert("✅ Your vote for " + playerId + " has been recorded!");
+  document.querySelectorAll(".vote-btn").forEach(btn => btn.disabled = true);
+}
 
-    // Voting logic
-    function vote(player) {
-      const currentUser = JSON.stringify(user);
-      const votedUser = localStorage.getItem("votedUser");
+// Home & Sign Out
+homeBtn.onclick = () => window.location.href = "games.html";
+signOutBtn.onclick = () => {
+  if (confirm("Sign out?")) {
+    localStorage.removeItem("user");
+    localStorage.removeItem("selectedGame");
+    window.location.href = "index.html";
+  }
+};
 
-      if (votedUser && votedUser === currentUser) {
-        alert("⚠️ Voting capacity reached! You can only vote once.");
-        return;
-      }
-
-      localStorage.setItem("votedUser", currentUser);
-      localStorage.setItem("voted", player);
-
-      alert("Thank you, " + user.name + "! Your vote for " + player + " has been recorded.");
-      document.querySelectorAll("main button").forEach(btn => btn.disabled = true);
-    }
-
-    // Home & Sign Out
-    homeBtn.addEventListener("click", () => window.location.href = "index.html");
-    signOutBtn.addEventListener("click", () => {
-      if (confirm("Are you sure you want to sign out?")) {
-        localStorage.removeItem("user");
-        localStorage.removeItem("selectedGame");
-        window.location.href = "index.html";
-      }
-    });
-
-    // Disable vote buttons if already voted
-    window.addEventListener("DOMContentLoaded", () => {
-      const votedUser = localStorage.getItem("votedUser");
-      if (votedUser && votedUser === JSON.stringify(user)) {
-        document.querySelectorAll("main button").forEach(btn => btn.disabled = true);
-      }
-    });
-  </script>
+// Disable buttons if already voted
+window.addEventListener("DOMContentLoaded", () => {
+  if (localStorage.getItem("votedUser") === user.EmailMobile) {
+    document.querySelectorAll(".vote-btn").forEach(btn => btn.disabled = true);
+  }
+});
+</script>
 </body>
 </html>
