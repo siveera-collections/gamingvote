@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Select Game</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="game-bg">
+  <div class="form-container">
+    <h1>Select Your Game</h1>
+    <p>Welcome, <span id="userName"></span></p>
+    <div class="games">
+      <button onclick="selectGame('Free Fire')">🔥 Free Fire</button>
+      <button onclick="selectGame('BGMI')">🎯 BGMI</button>
+      <button onclick="selectGame('Call of Duty')">⚡ Call of Duty</button>
+    </div>
+  </div>
+
+  <script>
+    const user = JSON.parse(localStorage.getItem("user"));
+    document.getElementById("userName").innerText = user?.name || "";
+
+    function selectGame(game) {
+      localStorage.setItem("selectedGame", game);
+      window.location.href = "vote.html"; // go to voting page
+    }
+  </script>
+</body>
+</html>
