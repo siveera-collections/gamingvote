@@ -189,3 +189,23 @@ button:hover {
     width: auto; /* Normal size on desktop */
   }
 }
+.captcha-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 10px 0;
+  background: #222;
+  padding: 10px;
+  border-radius: 8px;
+  gap: 10px;
+}
+
+#captchaText {
+  font-size: 22px;
+  font-weight: bold;
+  letter-spacing: 4px;
+  color: orange;
+  background: linear-gradient(to right, red, orange);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
