@@ -53,37 +53,28 @@
 
   <!-- Script -->
   <script>
-    // Check login
-    const user = JSON.parse(localStorage.getItem("user"));
-    if (!user) {
-      alert("⚠️ Please login first!");
-      window.location.href = "index.html";
+  const user = JSON.parse(localStorage.getItem("user"));
+  if (!user) {
+    // if no login info, redirect to index
+    alert("⚠️Please login first!");
+    window.location.href = "index.html";
+  } else {
+    document.getElementById("userName").innerText = user.name;
+  }
+
+  function selectGame(game) {
+    localStorage.setItem("selectedGame", game);
+
+    if (game === "Free Fire") {
+      // ✅ Only Free Fire goes for voting
+      window.location.href = "vote.html";
     } else {
-      document.getElementById("userName").innerText = user.name || "Player";
+      // ❌ BGMI & COD → squad only
+      alert("Squad Created for " + game + "! Voting Closed.");
+      // Stay on same page instead of redirecting
     }
+  }
+</script>
 
-    // If already selected a game, redirect accordingly
-    const alreadySelected = localStorage.getItem("selectedGame");
-    if (alreadySelected) {
-      if (alreadySelected === "Free Fire") {
-        window.location.href = "vote.html";
-      } else {
-        alert("You already selected " + alreadySelected + " earlier!");
-        window.location.href = "index.html";
-      }
-    }
-
-    // Game selection logic
-    function selectGame(game) {
-      localStorage.setItem("selectedGame", game);
-
-      if (game === "Free Fire") {
-        window.location.href = "vote.html";
-      } else {
-        alert("Squad Created for " + game + "! No voting required.");
-        window.location.href = "index.html";
-      }
-    }
-  </script>
 </body>
 </html>
