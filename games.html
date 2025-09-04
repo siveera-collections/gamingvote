@@ -26,13 +26,10 @@
     border-bottom: 2px solid rgba(255, 255, 255, 0.2);
   }
 
-  .site-header h1 {
-    color: #fff;
-  }
+  .site-header h1 { color: #fff; }
 
   .site-header .logo {
-    width: 55px;
-    height: 55px;
+    width: 55px; height: 55px;
     border-radius: 50%;
     border: 2px solid #fff;
     object-fit: cover;
@@ -67,6 +64,11 @@
   .bgmi-bg { background: linear-gradient(135deg, #32cd32, #228b22); }
   .cod-bg { background: linear-gradient(135deg, #1e90ff, #00008b); }
 
+  .disabled {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+
   .site-footer {
     margin-top: auto;
     background: linear-gradient(135deg, #ff4500, #ff6347);
@@ -77,31 +79,24 @@
   }
 
   @media (max-width: 600px) {
-    .games {
-      flex-direction: column;
-      gap: 15px;
-      margin: 20px 0;
-    }
+    .games { flex-direction: column; gap: 15px; margin: 20px 0; }
   }
 </style>
 </head>
 <body>
 
-  <!-- Header -->
   <header class="site-header">
     <img src="WhatsApp Image 2025-09-04 at 14.25.11_70c9b7fd.jpg" alt="Logo" class="logo">
     <h1>eSports.telKLT x IGTC</h1>
     <p>Welcome, <span id="userName"></span> 👋</p>
   </header>
 
-  <!-- Game Selection -->
   <div class="games">
-    <div class="game-card ff-bg" onclick="selectGame('Free Fire')">Free Fire</div>
-    <div class="game-card bgmi-bg" onclick="selectGame('BGMI')">BGMI</div>
-    <div class="game-card cod-bg" onclick="selectGame('Call of Duty')">Call of Duty</div>
+    <div class="game-card ff-bg" id="ffCard" onclick="selectGame('Free Fire')">Free Fire</div>
+    <div class="game-card bgmi-bg" id="bgmiCard" onclick="selectGame('BGMI')">BGMI</div>
+    <div class="game-card cod-bg" id="codCard" onclick="selectGame('Call of Duty')">Call of Duty</div>
   </div>
 
-  <!-- Footer -->
   <footer class="site-footer">
     <p>© 2023 eSports.telKLT x IGTC. All rights reserved.</p>
   </footer>
@@ -112,10 +107,25 @@ if (!user) {
   alert("⚠️ Please login first!");
   window.location.href = "index.html";
 }
-
 document.getElementById("userName").innerText = user.name;
 
+// Load voted data
+let votedData = JSON.parse(localStorage.getItem("votedUser")) || {};
+
+// Disable game cards if already voted
+for (const [u, game] of Object.entries(votedData)) {
+  if (u === user.EmailMobile) {
+    alert("⚠️ You have already voted in " + game + "! You cannot vote again.");
+    // Disable all cards
+    document.querySelectorAll(".game-card").forEach(card => card.classList.add("disabled"));
+  }
+}
+
 function selectGame(gameName) {
+  if (votedData[user.EmailMobile]) {
+    alert("⚠️ You cannot vote in another game!");
+    return;
+  }
   localStorage.setItem("selectedGame", gameName);
   window.location.href = "vote.html";
 }
