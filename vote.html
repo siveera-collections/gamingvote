@@ -6,16 +6,20 @@
   <title>Vote Players</title>
   <link rel="stylesheet" href="style.css">
 </head>
-<body class="shared-bg">
+<body id="voteBody">
+  <!-- Top Logo Header -->
   <header class="site-header">
-  <img src="logo.png" alt="Esports Collab Logo" class="logo">
-  <h1>Esports Collab Voting</h1>
-</header>
+    <img src="logo.png" alt="Esports Collab Logo" class="logo">
+    <h1>Esports Collab Voting</h1>
+  </header>
+
+  <!-- Game Title -->
   <header>
     <h1 id="gameTitle"></h1>
     <p>Vote for the best player!</p>
   </header>
 
+  <!-- Player Cards -->
   <main class="players">
     <div class="player-card">
       <h2>Player One</h2>
@@ -50,25 +54,33 @@
     </div>
   </main>
 
-  <script>
-  document.getElementById("gameTitle").innerText =
-    "Voting - " + localStorage.getItem("selectedGame");
-
-  function vote(player) {
-    if (localStorage.getItem("voted")) {
-      alert("⚠️ Voting capacity reached! You can only vote once.");
-      return;
-    }
-
-    localStorage.setItem("voted", player);
-    alert("✅ Thank you! Your vote for " + player + " has been recorded.");
-    document.querySelectorAll("button").forEach(btn => btn.disabled = true);
-  }
-</script>
-
-</body>
+  <!-- Footer -->
   <footer class="site-footer">
-  <p>© 2025 Esports Collab. All rights reserved.</p>
-</footer>
+    <p>© 2025 Esports Collab. All rights reserved.</p>
+  </footer>
 
+  <!-- Script -->
+  <script>
+    const selectedGame = localStorage.getItem("selectedGame");
+    document.getElementById("gameTitle").innerText =
+      "Voting - " + selectedGame;
+
+    // Set background dynamically
+    const body = document.getElementById("voteBody");
+    if (selectedGame === "Free Fire") body.classList.add("ff-bg");
+    else if (selectedGame === "BGMI") body.classList.add("bgmi-bg");
+    else if (selectedGame === "Call of Duty") body.classList.add("cod-bg");
+
+    // Voting logic
+    function vote(player) {
+      if (localStorage.getItem("voted")) {
+        alert("⚠️ Voting capacity reached! You can only vote once.");
+        return;
+      }
+      localStorage.setItem("voted", player);
+      alert("✅ Thank you! Your vote for " + player + " has been recorded.");
+      document.querySelectorAll("button").forEach(btn => btn.disabled = true);
+    }
+  </script>
+</body>
 </html>
