@@ -146,16 +146,23 @@ homeBtn.style.background = signOutBtn.style.background = navColor;
 // Apply vote button class
 voteBtns.forEach(btn => btn.classList.add(voteClass));
 
-// Voting logic
+// Voting logic: user can vote only once per game
 function castVote(playerId) {
-  const alreadyVoted = localStorage.getItem("votedUser");
-  if (alreadyVoted && alreadyVoted === user.EmailMobile) {
-    alert("⚠️ You have already voted!");
+  let votedData = JSON.parse(localStorage.getItem("votedUser")) || {};
+
+  if (!votedData[user.EmailMobile]) {
+    votedData[user.EmailMobile] = {};
+  }
+
+  if (votedData[user.EmailMobile][selectedGame]) {
+    alert(`⚠️ You have already voted for ${votedData[user.EmailMobile][selectedGame]} in ${selectedGame}!`);
     return;
   }
-  localStorage.setItem("votedUser", user.EmailMobile);
-  localStorage.setItem("votedPlayer", playerId);
-  alert("✅ Your vote for " + playerId + " has been recorded!");
+
+  votedData[user.EmailMobile][selectedGame] = playerId;
+  localStorage.setItem("votedUser", JSON.stringify(votedData));
+
+  alert(`✅ Your vote for ${playerId} has been recorded!`);
   voteBtns.forEach(btn => btn.disabled = true);
 }
 
@@ -169,9 +176,10 @@ signOutBtn.onclick = () => {
   }
 };
 
-// Disable buttons if already voted
+// Disable buttons if already voted in this game
 window.addEventListener("DOMContentLoaded", () => {
-  if (localStorage.getItem("votedUser") === user.EmailMobile) {
+  const votedData = JSON.parse(localStorage.getItem("votedUser")) || {};
+  if (votedData[user.EmailMobile] && votedData[user.EmailMobile][selectedGame]) {
     voteBtns.forEach(btn => btn.disabled = true);
   }
 });
