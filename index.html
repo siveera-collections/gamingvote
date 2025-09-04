@@ -5,6 +5,46 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Esports Voting Portal</title>
   <link rel="stylesheet" href="style.css">
+  <style>
+    .captcha-box {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 10px 0;
+      background: #222;
+      padding: 10px;
+      border-radius: 8px;
+      gap: 10px;
+      user-select: none;
+    }
+    #captchaText {
+      font-size: 22px;
+      font-weight: bold;
+      letter-spacing: 4px;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .captcha-box button {
+      background: #ff4d4d;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 6px;
+      color: #fff;
+      cursor: pointer;
+    }
+    .captcha-box button:hover {
+      background: #ff7700;
+    }
+    @media (max-width: 600px) {
+      .form-container {
+        width: 95%;
+        padding: 15px;
+      }
+      h1 {
+        font-size: 1.5rem;
+      }
+    }
+  </style>
 </head>
 <body id="loginBody" class="shared-bg">
   <!-- Header -->
@@ -40,19 +80,28 @@
   <!-- Script -->
   <script>
     let captchaCode = "";
+    let attempts = 0;
 
     function generateCaptcha() {
       const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
       captchaCode = "";
+      let styledCaptcha = "";
       for (let i = 0; i < 5; i++) {
-        captchaCode += chars.charAt(Math.floor(Math.random() * chars.length));
+        const char = chars.charAt(Math.floor(Math.random() * chars.length));
+        captchaCode += char;
+        styledCaptcha += `<span style="
+          transform: rotate(${Math.random() * 30 - 15}deg);
+          display:inline-block;
+          color: hsl(${Math.random()*360}, 80%, 55%);
+          font-size:${18 + Math.random()*8}px;
+        ">${char}</span>`;
       }
-      document.getElementById("captchaText").innerText = captchaCode;
+      document.getElementById("captchaText").innerHTML = styledCaptcha;
     }
 
     function login() {
       const name = document.getElementById("name").value.trim();
-      const age = document.getElementById("age").value.trim();
+      const age = parseInt(document.getElementById("age").value.trim());
       const EmailMobile = document.getElementById("EmailMobile").value.trim();
       const captchaInput = document.getElementById("captchaInput").value.trim();
 
@@ -61,8 +110,14 @@
         return;
       }
 
+      // Age validation
+      if (isNaN(age) || age < 16 || age > 60) {
+        alert("⚠️ Age must be between 16 and 60!");
+        return;
+      }
+
       // Validate email or mobile
-      const emailPattern = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/;
+      const emailPattern = /^[^ ]+@[^ ]+\.[a-z]{2,}$/i;
       const mobilePattern = /^[0-9]{10}$/;
       if (!(emailPattern.test(EmailMobile) || mobilePattern.test(EmailMobile))) {
         alert("⚠️ Enter valid Email OR 10-digit Mobile No");
@@ -71,13 +126,24 @@
 
       // Validate captcha
       if (captchaInput.toUpperCase() !== captchaCode) {
-        alert("Wrong CAPTCHA, try again!");
+        attempts++;
+        if (attempts >= 3) {
+          alert("Too many failed attempts! Please wait 30 seconds.");
+          document.querySelector("button").disabled = true;
+          setTimeout(() => {
+            document.querySelector("button").disabled = false;
+            attempts = 0;
+          }, 30000);
+        } else {
+          alert("Wrong CAPTCHA, try again!");
+        }
         generateCaptcha();
         return;
       }
 
       // Store user
       localStorage.setItem("user", JSON.stringify({ name, age, EmailMobile }));
+      localStorage.removeItem("votedUser"); // reset vote if new login
       alert("Authentication Successful!");
       window.location.href = "games.html";
     }
