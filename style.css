@@ -13,10 +13,16 @@ body {
   flex-direction: column;
   justify-content: center;
   background: #0f0f0f url("shared.jpg") no-repeat center center/cover;
-  text-align: center; /* ✅ All text centered */
+  text-align: center;
+  animation: fadeIn 0.8s ease-in-out; /* Smooth fade-in */
 }
 
-/* Glassmorphism container */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Glassmorphism containers */
 .form-container, .player-card, header {
   background: rgba(0, 0, 0, 0.7);
   border: 1px solid rgba(255, 255, 255, 0.2);
@@ -73,9 +79,15 @@ input::placeholder {
   color: #aaa;
 }
 
+input:focus {
+  border: 2px solid #ff6347;
+  box-shadow: 0 0 8px rgba(255, 99, 71, 0.6);
+  background: rgba(255, 255, 255, 0.15);
+}
+
 /* Buttons */
 button {
-  background: linear-gradient(135deg, #ff4500, #ff6347); /* Red → Orange */
+  background: linear-gradient(135deg, #ff4500, #ff6347);
   border: none;
   padding: 12px 25px;
   border-radius: 10px;
@@ -85,13 +97,40 @@ button {
   cursor: pointer;
   margin-top: 10px;
   transition: all 0.3s ease;
-  width: 100%; /* Full width on mobile */
+  width: 100%;
   max-width: 280px;
 }
 
 button:hover {
-  background: linear-gradient(135deg, #ff6347, #ff0000); /* Orange → Deep Red */
+  background: linear-gradient(135deg, #ff6347, #ff0000);
   transform: scale(1.05);
+}
+
+button:active {
+  background: linear-gradient(135deg, #ff0000, #ff4500);
+  transform: scale(0.97);
+}
+
+/* Game-specific voting button themes */
+.ff-btn {
+  background: linear-gradient(135deg, #ff7f50, #ff4500);
+}
+.ff-btn:hover {
+  background: linear-gradient(135deg, #ff6347, #cc3300);
+}
+
+.bgmi-btn {
+  background: linear-gradient(135deg, #32cd32, #228b22);
+}
+.bgmi-btn:hover {
+  background: linear-gradient(135deg, #28a428, #1e701e);
+}
+
+.cod-btn {
+  background: linear-gradient(135deg, #1e90ff, #00008b);
+}
+.cod-btn:hover {
+  background: linear-gradient(135deg, #1874d1, #000066);
 }
 
 /* Game selection page */
@@ -118,6 +157,14 @@ button:hover {
   text-align: center;
 }
 
+.player-card {
+  transition: all 0.3s ease;
+}
+.player-card:hover {
+  box-shadow: 0 0 20px rgba(255, 69, 0, 0.7);
+  transform: translateY(-8px) scale(1.02);
+}
+
 .player-card p {
   margin: 6px 0;
   font-size: 14px;
@@ -132,18 +179,18 @@ button:hover {
 /* Header */
 .site-header {
   display: flex;
-  flex-direction: column; /* Stack on mobile */
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 10px;
   padding: 15px;
-  background: linear-gradient(135deg, #ff4500, #ff6347); /* Red-Orange Gradient */
+  background: linear-gradient(135deg, #ff4500, #ff6347);
   border-bottom: 2px solid rgba(255, 255, 255, 0.2);
   text-align: center;
 }
 
 .site-header h1 {
-  color: #fff; /* White text on gradient */
+  color: #fff;
 }
 
 .site-header .logo {
@@ -163,6 +210,9 @@ button:hover {
   border-top: 2px solid rgba(255, 255, 255, 0.2);
   font-size: 14px;
   color: #fff;
+  position: relative;
+  bottom: 0;
+  width: 100%;
 }
 
 /* Backgrounds */
@@ -179,33 +229,44 @@ button:hover {
   background: url("cod.jpg") no-repeat center center/cover;
 }
 
-/* Responsive fixes */
-@media (min-width: 768px) {
-  .site-header {
-    flex-direction: row; /* Logo + Title side by side */
-  }
-
-  button {
-    width: auto; /* Normal size on desktop */
-  }
-}
+/* CAPTCHA */
 .captcha-box {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   margin: 10px 0;
   background: #222;
-  padding: 10px;
+  padding: 12px 15px;
   border-radius: 8px;
   gap: 10px;
+}
+
+.captcha-box button {
+  width: auto;
+  padding: 6px 10px;
+  font-size: 14px;
+  background: #444;
+  border-radius: 6px;
+}
+.captcha-box button:hover {
+  background: #666;
 }
 
 #captchaText {
   font-size: 22px;
   font-weight: bold;
   letter-spacing: 4px;
-  color: orange;
   background: linear-gradient(to right, red, orange);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+}
+
+/* Responsive fixes */
+@media (min-width: 768px) {
+  .site-header {
+    flex-direction: row;
+  }
+  button {
+    width: auto;
+  }
 }
