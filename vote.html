@@ -1,10 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Vote Players</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vote Players</title>
+<link rel="stylesheet" href="style.css">
+<style>
+  .top-nav {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin: 10px 0;
+  }
+  .top-nav button {
+    padding: 6px 12px;
+    cursor: pointer;
+    border-radius: 5px;
+    border: none;
+    color: #fff;
+    font-weight: bold;
+  }
+</style>
 </head>
 <body id="voteBody">
   <!-- Top Logo Header -->
@@ -12,6 +28,12 @@
     <img src="WhatsApp Image 2025-09-04 at 14.25.11_70c9b7fd.jpg" alt="Esports Collab Logo" class="logo">
     <h1>eSports.telKLT x IGTC</h1>
   </header>
+
+  <!-- Top Navigation -->
+  <div class="top-nav">
+    <button id="homeBtn">🏠 Home</button>
+    <button id="signOutBtn">🚪 Sign Out</button>
+  </div>
 
   <!-- Game Title -->
   <header>
@@ -29,7 +51,6 @@
       <p>University ID: UNI001</p>
       <button onclick="vote('Player One')">Vote</button>
     </div>
-
     <div class="player-card">
       <h2>Player Two</h2>
       <p>Game ID: BG98765</p>
@@ -37,7 +58,6 @@
       <p>University ID: UNI002</p>
       <button onclick="vote('Player Two')">Vote</button>
     </div>
-
     <div class="player-card">
       <h2>Player Three</h2>
       <p>Game ID: COD54321</p>
@@ -45,7 +65,6 @@
       <p>University ID: UNI003</p>
       <button onclick="vote('Player Three')">Vote</button>
     </div>
-
     <div class="player-card">
       <h2>Player Four</h2>
       <p>Game ID: FF67890</p>
@@ -63,32 +82,44 @@
   <!-- Script -->
   <script>
     const user = JSON.parse(localStorage.getItem("user"));
-    const selectedGame = localStorage.getItem("selectedGame");
+    const selectedGame = localStorage.getItem("selectedGame") || "Free Fire";
 
-    // Redirect if no login
     if (!user) {
       alert("⚠️ Please login first!");
       window.location.href = "index.html";
     }
 
-    // Show username
     document.getElementById("userName").innerText = user?.name || "";
-
-    // Show game
     document.getElementById("gameTitle").innerText = "Voting - " + selectedGame;
 
-    // Set background dynamically
+    // Set body background & button colors dynamically
     const body = document.getElementById("voteBody");
-    if (selectedGame === "Free Fire") body.classList.add("ff-bg");
-    else if (selectedGame === "BGMI") body.classList.add("bgmi-bg");
-    else if (selectedGame === "Call of Duty") body.classList.add("cod-bg");
+    const homeBtn = document.getElementById("homeBtn");
+    const signOutBtn = document.getElementById("signOutBtn");
+
+    if (selectedGame === "Free Fire") {
+      body.className = "ff-bg";
+      homeBtn.style.background = signOutBtn.style.background = "#ff4d4d";
+    } else if (selectedGame === "BGMI") {
+      body.className = "bgmi-bg";
+      homeBtn.style.background = signOutBtn.style.background = "#ffb84d";
+    } else if (selectedGame === "Call of Duty") {
+      body.className = "cod-bg";
+      homeBtn.style.background = signOutBtn.style.background = "#4d79ff";
+    }
+
+    // Hover effect
+    [homeBtn, signOutBtn].forEach(btn => {
+      btn.addEventListener("mouseover", () => btn.style.opacity = "0.8");
+      btn.addEventListener("mouseout", () => btn.style.opacity = "1");
+    });
 
     // Voting logic
     function vote(player) {
-      const currentUser = localStorage.getItem("user");
-      const alreadyVoted = localStorage.getItem("votedUser");
+      const currentUser = JSON.stringify(user);
+      const votedUser = localStorage.getItem("votedUser");
 
-      if (alreadyVoted && alreadyVoted === currentUser) {
+      if (votedUser && votedUser === currentUser) {
         alert("⚠️ Voting capacity reached! You can only vote once.");
         return;
       }
@@ -97,8 +128,26 @@
       localStorage.setItem("voted", player);
 
       alert("Thank you, " + user.name + "! Your vote for " + player + " has been recorded.");
-      document.querySelectorAll("button").forEach(btn => btn.disabled = true);
+      document.querySelectorAll("main button").forEach(btn => btn.disabled = true);
     }
+
+    // Home & Sign Out
+    homeBtn.addEventListener("click", () => window.location.href = "index.html");
+    signOutBtn.addEventListener("click", () => {
+      if (confirm("Are you sure you want to sign out?")) {
+        localStorage.removeItem("user");
+        localStorage.removeItem("selectedGame");
+        window.location.href = "index.html";
+      }
+    });
+
+    // Disable vote buttons if already voted
+    window.addEventListener("DOMContentLoaded", () => {
+      const votedUser = localStorage.getItem("votedUser");
+      if (votedUser && votedUser === JSON.stringify(user)) {
+        document.querySelectorAll("main button").forEach(btn => btn.disabled = true);
+      }
+    });
   </script>
 </body>
 </html>
