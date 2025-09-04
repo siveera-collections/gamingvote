@@ -12,16 +12,52 @@
     gap: 10px;
     margin: 10px 0;
   }
+
   .top-nav button {
-    padding: 6px 12px;
+    padding: 8px 16px;
     cursor: pointer;
-    border-radius: 5px;
+    border-radius: 10px;
     border: none;
     color: #fff;
-    font-weight: bold;
+    font-weight: 600;
+    transition: all 0.3s ease;
   }
+
   .top-nav button:hover {
-    opacity: 0.8;
+    opacity: 0.85;
+    transform: scale(1.05);
+  }
+
+  .vote-btn {
+    width: 100%;
+    padding: 12px;
+    border-radius: 10px;
+    border: none;
+    color: #fff;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .vote-btn.ff {
+    background: linear-gradient(135deg, #ff7f50, #ff4500);
+  }
+  .vote-btn.ff:hover {
+    background: linear-gradient(135deg, #ff6347, #cc3300);
+  }
+
+  .vote-btn.bgmi {
+    background: linear-gradient(135deg, #32cd32, #228b22);
+  }
+  .vote-btn.bgmi:hover {
+    background: linear-gradient(135deg, #28a428, #1e701e);
+  }
+
+  .vote-btn.cod {
+    background: linear-gradient(135deg, #1e90ff, #00008b);
+  }
+  .vote-btn.cod:hover {
+    background: linear-gradient(135deg, #1874d1, #000066);
   }
 </style>
 </head>
@@ -50,17 +86,17 @@
     <div class="player-card">
       <h2>Player 1</h2>
       <p>Squad Alpha</p>
-      <button class="vote-btn" onclick="castVote('Player 1')">Vote</button>
+      <button class="vote-btn" id="btn1" onclick="castVote('Player 1')">Vote</button>
     </div>
     <div class="player-card">
       <h2>Player 2</h2>
       <p>Squad Beta</p>
-      <button class="vote-btn" onclick="castVote('Player 2')">Vote</button>
+      <button class="vote-btn" id="btn2" onclick="castVote('Player 2')">Vote</button>
     </div>
     <div class="player-card">
       <h2>Player 3</h2>
       <p>Squad Gamma</p>
-      <button class="vote-btn" onclick="castVote('Player 3')">Vote</button>
+      <button class="vote-btn" id="btn3" onclick="castVote('Player 3')">Vote</button>
     </div>
   </main>
 
@@ -84,20 +120,31 @@ document.getElementById("gameTitle").innerText = "Voting - " + selectedGame;
 const body = document.getElementById("voteBody");
 const homeBtn = document.getElementById("homeBtn");
 const signOutBtn = document.getElementById("signOutBtn");
+const voteBtns = document.querySelectorAll(".vote-btn");
 
 // Dynamic background & button colors
-let color = "#ff4d4d"; // FF red
+let navColor = "#ff4d4d"; // default FF
+let voteClass = "ff";
+
 if (selectedGame === "Free Fire") {
   body.className = "ff-bg";
-  color = "#ff4d4d";
+  navColor = "#ff4d4d";
+  voteClass = "ff";
 } else if (selectedGame === "BGMI") {
   body.className = "bgmi-bg";
-  color = "#ffb84d";
+  navColor = "#32cd32";
+  voteClass = "bgmi";
 } else if (selectedGame === "Call of Duty") {
   body.className = "cod-bg";
-  color = "#4d79ff";
+  navColor = "#1e90ff";
+  voteClass = "cod";
 }
-homeBtn.style.background = signOutBtn.style.background = color;
+
+// Apply nav color
+homeBtn.style.background = signOutBtn.style.background = navColor;
+
+// Apply vote button class
+voteBtns.forEach(btn => btn.classList.add(voteClass));
 
 // Voting logic
 function castVote(playerId) {
@@ -109,7 +156,7 @@ function castVote(playerId) {
   localStorage.setItem("votedUser", user.EmailMobile);
   localStorage.setItem("votedPlayer", playerId);
   alert("✅ Your vote for " + playerId + " has been recorded!");
-  document.querySelectorAll(".vote-btn").forEach(btn => btn.disabled = true);
+  voteBtns.forEach(btn => btn.disabled = true);
 }
 
 // Home & Sign Out
@@ -125,7 +172,7 @@ signOutBtn.onclick = () => {
 // Disable buttons if already voted
 window.addEventListener("DOMContentLoaded", () => {
   if (localStorage.getItem("votedUser") === user.EmailMobile) {
-    document.querySelectorAll(".vote-btn").forEach(btn => btn.disabled = true);
+    voteBtns.forEach(btn => btn.disabled = true);
   }
 });
 </script>
