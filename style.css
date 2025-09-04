@@ -1,75 +1,137 @@
-body {
+/* Global reset */
+* {
   margin: 0;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  color: white;
-  text-align: center;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-/* Background images for each page */
-.login-bg {
-  background: url('https://images.unsplash.com/photo-1605902711622-cfb43c4437b4') no-repeat center center/cover;
+body {
+  font-family: "Poppins", sans-serif;
+  color: #fff;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: #0f0f0f url("https://images.unsplash.com/photo-1605902711622-cfb43c4437b4") no-repeat center center/cover;
 }
 
-.game-bg {
-  background: url('https://images.unsplash.com/photo-1607083208613-bf3f0fbb8f1c') no-repeat center center/cover;
-}
-
-.vote-bg {
-  background: url('https://images.unsplash.com/photo-1511512578047-dfb367046420') no-repeat center center/cover;
-}
-
-header {
-  padding: 20px;
-  background: rgba(0,0,0,0.6);
-}
-
-.form-container {
-  background: rgba(0,0,0,0.7);
-  padding: 30px;
-  margin: 80px auto;
-  width: 300px;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.5);
-}
-
-input {
+/* Glassmorphism container */
+.form-container, .player-card, header {
+  background: rgba(0, 0, 0, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+  padding: 25px;
+  margin: 20px auto;
   width: 90%;
-  margin: 10px 0;
-  padding: 10px;
-  border-radius: 8px;
-  border: none;
+  max-width: 400px;
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-button {
-  background: #00c6ff;
+.form-container:hover, .player-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.8);
+}
+
+/* Headings */
+h1, h2 {
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+h1 {
+  margin-bottom: 15px;
+  font-size: 2rem;
+  color: #00eaff;
+}
+
+h2 {
+  margin-bottom: 8px;
+  font-size: 1.3rem;
+  color: #ffae00;
+}
+
+/* Inputs */
+input {
+  width: 100%;
+  margin: 10px 0;
+  padding: 12px;
+  border-radius: 10px;
   border: none;
-  padding: 10px 20px;
-  border-radius: 8px;
+  outline: none;
+  font-size: 14px;
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
+input::placeholder {
+  color: #aaa;
+}
+
+/* Buttons */
+button {
+  background: linear-gradient(135deg, #00eaff, #0072ff);
+  border: none;
+  padding: 12px 25px;
+  border-radius: 10px;
   color: white;
   font-size: 16px;
   cursor: pointer;
   margin-top: 10px;
-  transition: background 0.3s;
+  transition: all 0.3s ease;
 }
 
 button:hover {
-  background: #0072ff;
+  background: linear-gradient(135deg, #ffae00, #ff0077);
+  transform: scale(1.05);
 }
 
+/* Game selection page */
+.games {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.games button {
+  width: 100%;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+/* Players grid */
 .players {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: 20px;
-  padding: 20px;
+  padding: 30px;
+  max-width: 1200px;
+  margin: auto;
 }
 
-.player-card {
-  background: rgba(0,0,0,0.75);
-  border-radius: 12px;
-  padding: 20px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+.player-card p {
+  margin: 6px 0;
+  font-size: 14px;
+  color: #ddd;
 }
 
-.player-card h2 {
-  margin-bottom: 10px;
+.player-card button {
+  margin-top: 12px;
+  width: 100%;
+}
+
+/* Header */
+header {
+  text-align: center;
+  padding: 25px;
+  margin-bottom: 20px;
+  max-width: 1000px;
+}
+
+header p {
+  color: #ccc;
+  margin-top: 5px;
+  font-size: 15px;
 }
