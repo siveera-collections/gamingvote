@@ -10,37 +10,35 @@
   <!-- Top Logo Header -->
   <header class="site-header">
     <img src="logo.png" alt="Esports Collab Logo" class="logo">
-    <h1>Esports Collab Voting</h1>
+    <h1>eSports.telKLT x IGTC</h1>
   </header>
 
   <!-- Login Form -->
   <div class="form-container">
-    <h1>🎮 Esports Voting</h1>
-    <p>Login to continue</p>
+    <h1>Esports Voting</h1>
+    <p>Enter Details To Proceed</p>
 
     <input type="text" id="name" placeholder="Full Name" required>
-    <input type="text" id="universityId" placeholder="University ID" required>
-    <input type="text" id="gameId" placeholder="Game ID (In-game)" required>
-    <input type="number" id="experience" placeholder="Experience (years)" required>
+    <input type="text" id="age" placeholder="Age" required>
+    <input type="text" id="EmailMobile" placeholder="Email/Mobile No" required>
 
     <button onclick="login()">Continue</button>
   </div>
 
   <!-- Footer -->
   <footer class="site-footer">
-    <p>© 2025 Esports Collab. All rights reserved.</p>
+    <p>© 2023 eSports.telKLT x IGTC. All rights reserved.</p>
   </footer>
 
   <!-- Script -->
   <script>
     function login() {
       const name = document.getElementById("name").value.trim();
-      const universityId = document.getElementById("universityId").value.trim();
-      const gameId = document.getElementById("gameId").value.trim();
-      const exp = document.getElementById("experience").value.trim();
+      const age = document.getElementById("age").value.trim();
+      const EmailMobile = document.getElementById("EmailMobile").value.trim();
 
-      if (name && universityId && gameId && exp) {
-        localStorage.setItem("user", JSON.stringify({ name, universityId, gameId, exp }));
+      if (name && age && EmailMobile) {
+        localStorage.setItem("user", JSON.stringify({ name, age, EmailMobile}));
         window.location.href = "games.html"; // go to game selection
       } else {
         alert("⚠️ Please fill all fields!");
