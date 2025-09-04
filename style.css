@@ -163,8 +163,11 @@ header p {
   font-size: 14px;
   color: #aaa;
 }
+.shared-bg {
+  background: url("shared.jpg") no-repeat center center/cover;
+}
 .ff-bg {
-  background: url("ff.jpg") no-repeat center center/cover;
+  background: url("shared.jpg") no-repeat center center/cover;
 }
 
 .bgmi-bg {
