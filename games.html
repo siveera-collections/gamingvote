@@ -26,7 +26,7 @@
 
   <!-- Footer -->
   <footer class="site-footer">
-    <p>© 2023 eSports.telKLT x IGTC. All rights reserved.</p>
+    <p>© 2025 Esports Collab. All rights reserved.</p>
   </footer>
 
   <!-- Script -->
@@ -42,7 +42,15 @@
 
     function selectGame(game) {
       localStorage.setItem("selectedGame", game);
-      window.location.href = "vote.html"; // go to voting page
+
+      if (game === "Free Fire") {
+        // allow voting
+        window.location.href = "vote.html";
+      } else {
+        // block voting for other games
+        alert("✅ Squad Created for " + game + "! No voting required.");
+        window.location.href = "index.html"; // back to login/home
+      }
     }
   </script>
 </body>
