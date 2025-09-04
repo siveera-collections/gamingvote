@@ -5,6 +5,24 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Vote - Free Fire</title>
   <link rel="stylesheet" href="style.css">
+  <style>
+    .top-nav {
+      display: flex;
+      justify-content: space-between;
+      margin: 10px 0;
+    }
+    .top-nav button {
+      padding: 6px 12px;
+      cursor: pointer;
+      border-radius: 5px;
+      border: none;
+      background: #ff4d4d;
+      color: #fff;
+    }
+    .top-nav button:hover {
+      background: #ff7700;
+    }
+  </style>
 </head>
 <body id="voteBody" class="ff-bg">
   <!-- Top Header -->
@@ -13,9 +31,14 @@
     <h1>Vote Your Favourite Free Fire Player</h1>
   </header>
 
+  <!-- Navigation -->
+  <div class="top-nav">
+    <button onclick="goHome()">🏠 Home</button>
+    <button onclick="signOut()">🚪 Sign Out</button>
+  </div>
+
   <!-- Voting Section -->
   <div class="players" id="playersList">
-    <!-- Example players (replace with your real data) -->
     <div class="player-card">
       <h2>Player 1</h2>
       <p>Squad Alpha</p>
@@ -58,8 +81,31 @@
       localStorage.setItem("hasVotedFF", "true");
       localStorage.setItem("votedPlayer", playerId);
 
-      alert("Your vote for " + playerId + " has been submitted!");
+      alert("✅ Your vote for " + playerId + " has been submitted!");
+
+      // Disable all vote buttons
+      document.querySelectorAll(".ff-btn").forEach(btn => btn.disabled = true);
     }
+
+    // Home button
+    function goHome() {
+      window.location.href = "index.html";
+    }
+
+    // Sign Out button
+    function signOut() {
+      if (confirm("Are you sure you want to sign out?")) {
+        localStorage.removeItem("user");
+        window.location.href = "index.html";
+      }
+    }
+
+    // Disable buttons on load if already voted
+    window.addEventListener("DOMContentLoaded", () => {
+      if (localStorage.getItem("hasVotedFF") === "true") {
+        document.querySelectorAll(".ff-btn").forEach(btn => btn.disabled = true);
+      }
+    });
   </script>
 </body>
 </html>
