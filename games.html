@@ -6,11 +6,14 @@
   <title>Select Game</title>
   <link rel="stylesheet" href="style.css">
 </head>
-<body class="shared-bg">
+<body id="gamesBody" class="shared-bg">
+  <!-- Top Logo Header -->
   <header class="site-header">
-  <img src="logo.png" alt="Esports Collab Logo" class="logo">
-  <h1>Esports Collab Voting</h1>
-</header>
+    <img src="logo.png" alt="Esports Collab Logo" class="logo">
+    <h1>Esports Collab Voting</h1>
+  </header>
+
+  <!-- Game Selection -->
   <div class="form-container">
     <h1>Select Your Game</h1>
     <p>Welcome, <span id="userName"></span></p>
@@ -21,9 +24,21 @@
     </div>
   </div>
 
+  <!-- Footer -->
+  <footer class="site-footer">
+    <p>© 2025 Esports Collab. All rights reserved.</p>
+  </footer>
+
+  <!-- Script -->
   <script>
     const user = JSON.parse(localStorage.getItem("user"));
-    document.getElementById("userName").innerText = user?.name || "";
+    if (!user) {
+      // if no login info, redirect to index
+      alert("⚠️ Please login first!");
+      window.location.href = "index.html";
+    } else {
+      document.getElementById("userName").innerText = user.name;
+    }
 
     function selectGame(game) {
       localStorage.setItem("selectedGame", game);
@@ -31,8 +46,4 @@
     }
   </script>
 </body>
-  <footer class="site-footer">
-  <p>© 2025 Esports Collab. All rights reserved.</p>
-</footer>
-
 </html>
