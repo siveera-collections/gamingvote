@@ -7,9 +7,9 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body id="loginBody" class="shared-bg">
-  <!-- Top Logo Header -->
+  <!-- Header -->
   <header class="site-header">
-    <img src="WhatsApp Image 2025-09-04 at 14.25.11_70c9b7fd.jpg" alt="Esports Collab Logo" class="logo">
+    <img src="logo.png" alt="Esports Collab Logo" class="logo">
     <h1>eSports.telKLT x IGTC</h1>
   </header>
 
@@ -22,6 +22,13 @@
     <input type="number" id="age" placeholder="Age" required>
     <input type="text" id="EmailMobile" placeholder="Email or Mobile No" required>
 
+    <!-- CAPTCHA -->
+    <div class="captcha-box">
+      <span id="captchaText"></span>
+      <button type="button" onclick="generateCaptcha()">↻</button>
+    </div>
+    <input type="text" id="captchaInput" placeholder="Enter CAPTCHA" required>
+
     <button onclick="login()">Continue</button>
   </div>
 
@@ -32,39 +39,51 @@
 
   <!-- Script -->
   <script>
+    let captchaCode = "";
+
+    function generateCaptcha() {
+      const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+      captchaCode = "";
+      for (let i = 0; i < 5; i++) {
+        captchaCode += chars.charAt(Math.floor(Math.random() * chars.length));
+      }
+      document.getElementById("captchaText").innerText = captchaCode;
+    }
+
     function login() {
       const name = document.getElementById("name").value.trim();
       const age = document.getElementById("age").value.trim();
       const EmailMobile = document.getElementById("EmailMobile").value.trim();
+      const captchaInput = document.getElementById("captchaInput").value.trim();
 
-      if (!name || !age || !EmailMobile) {
+      if (!name || !age || !EmailMobile || !captchaInput) {
         alert("⚠️ Please fill all fields!");
         return;
       }
 
-      // ✅ Email pattern check
+      // Validate email or mobile
       const emailPattern = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/;
-      // ✅ Mobile pattern check (10 digits only)
       const mobilePattern = /^[0-9]{10}$/;
-
       if (!(emailPattern.test(EmailMobile) || mobilePattern.test(EmailMobile))) {
-        alert("⚠️ Please enter a valid Email OR a 10-digit Mobile number.");
+        alert("⚠️ Enter valid Email OR 10-digit Mobile No");
         return;
       }
 
-      // Check if new user is different → reset vote
-      const oldUser = JSON.parse(localStorage.getItem("user"));
-      if (!oldUser || oldUser.EmailMobile !== EmailMobile || oldUser.name !== name) {
-        localStorage.removeItem("voted");
+      // Validate captcha
+      if (captchaInput.toUpperCase() !== captchaCode) {
+        alert("Wrong CAPTCHA, try again!");
+        generateCaptcha();
+        return;
       }
 
-      // Save user
-      const newUser = { name, age, EmailMobile };
-      localStorage.setItem("user", JSON.stringify(newUser));
-
-      // Redirect
+      // Store user
+      localStorage.setItem("user", JSON.stringify({ name, age, EmailMobile }));
+      alert("Authentication Successful!");
       window.location.href = "games.html";
     }
+
+    // Generate first captcha
+    window.onload = generateCaptcha;
   </script>
 </body>
 </html>
