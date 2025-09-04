@@ -163,23 +163,15 @@ header p {
   font-size: 14px;
   color: #aaa;
 }
-/* Shared background for login & game selection */
-.shared-bg {
-  background: url("https://images.unsplash.com/photo-1605902711622-cfb43c4437b4")
-    no-repeat center center/cover;
-}
-
-/* Free Fire background */
 .ff-bg {
-  background: url("https://i.ibb.co/8Y3vHWh/freefire.jpg") no-repeat center center/cover;
+  background: url("ff.jpg") no-repeat center center/cover;
 }
 
-/* BGMI background */
 .bgmi-bg {
-  background: url("https://i.ibb.co/zS2TjMm/bgmi.jpg") no-repeat center center/cover;
+  background: url("bgmi.jpg") no-repeat center center/cover;
 }
 
-/* COD background */
 .cod-bg {
-  background: url("https://i.ibb.co/7b60p7d/cod.jpg") no-repeat center center/cover;
+  background: url("cod.jpg") no-repeat center center/cover;
 }
+
