@@ -6,32 +6,87 @@
 <title>Select Game - eSports Voting</title>
 <link rel="stylesheet" href="style.css">
 <style>
+  body {
+    font-family: "Poppins", sans-serif;
+    background: url("shared.jpg") no-repeat center center/cover;
+    color: #fff;
+    text-align: center;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .site-header {
+    background: linear-gradient(135deg, #ff4500, #ff6347);
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+  }
+
+  .site-header h1 {
+    color: #fff;
+  }
+
+  .site-header .logo {
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    border: 2px solid #fff;
+    object-fit: cover;
+  }
+
   .games {
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
     justify-content: center;
-    margin-top: 30px;
+    margin: 40px 0;
   }
+
   .game-card {
     width: 200px;
-    text-align: center;
-    padding: 15px;
-    border-radius: 10px;
-    cursor: pointer;
-    color: #fff;
+    padding: 20px;
+    border-radius: 15px;
     font-weight: bold;
-    transition: transform 0.2s;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    text-align: center;
+    color: #fff;
+    font-size: 18px;
   }
+
   .game-card:hover {
     transform: scale(1.05);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.6);
   }
-  .ff-bg { background: #ff4d4d; }
-  .bgmi-bg { background: #ffb84d; }
-  .cod-bg { background: #4d79ff; }
+
+  .ff-bg { background: linear-gradient(135deg, #ff7f50, #ff4500); }
+  .bgmi-bg { background: linear-gradient(135deg, #32cd32, #228b22); }
+  .cod-bg { background: linear-gradient(135deg, #1e90ff, #00008b); }
+
+  .site-footer {
+    margin-top: auto;
+    background: linear-gradient(135deg, #ff4500, #ff6347);
+    padding: 15px;
+    font-size: 14px;
+    color: #fff;
+    border-top: 2px solid rgba(255,255,255,0.2);
+  }
+
+  @media (max-width: 600px) {
+    .games {
+      flex-direction: column;
+      gap: 15px;
+      margin: 20px 0;
+    }
+  }
 </style>
 </head>
 <body>
+
   <!-- Header -->
   <header class="site-header">
     <img src="WhatsApp Image 2025-09-04 at 14.25.11_70c9b7fd.jpg" alt="Logo" class="logo">
@@ -65,5 +120,6 @@ function selectGame(gameName) {
   window.location.href = "vote.html";
 }
 </script>
+
 </body>
 </html>
