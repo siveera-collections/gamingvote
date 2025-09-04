@@ -6,52 +6,58 @@
   <title>Vote Players</title>
   <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="vote-bg">
   <header>
-    <h1 id="game-title"></h1>
-    <p>Vote for your favorite player!</p>
+    <h1 id="gameTitle"></h1>
+    <p>Vote for the best player!</p>
   </header>
 
   <main class="players">
     <div class="player-card">
-      <img src="https://i.pravatar.cc/200?img=11" alt="Player 1">
       <h2>Player One</h2>
-      <button onclick="vote('p1')">Vote</button>
-      <p id="p1-votes">Votes: 0</p>
+      <p>Game ID: FF12345</p>
+      <p>Experience: 2 years</p>
+      <p>University ID: UNI001</p>
+      <button onclick="vote('player1')">Vote</button>
     </div>
 
     <div class="player-card">
-      <img src="https://i.pravatar.cc/200?img=12" alt="Player 2">
       <h2>Player Two</h2>
-      <button onclick="vote('p2')">Vote</button>
-      <p id="p2-votes">Votes: 0</p>
+      <p>Game ID: BG98765</p>
+      <p>Experience: 3 years</p>
+      <p>University ID: UNI002</p>
+      <button onclick="vote('player2')">Vote</button>
     </div>
 
     <div class="player-card">
-      <img src="https://i.pravatar.cc/200?img=13" alt="Player 3">
       <h2>Player Three</h2>
-      <button onclick="vote('p3')">Vote</button>
-      <p id="p3-votes">Votes: 0</p>
+      <p>Game ID: COD54321</p>
+      <p>Experience: 4 years</p>
+      <p>University ID: UNI003</p>
+      <button onclick="vote('player3')">Vote</button>
     </div>
 
     <div class="player-card">
-      <img src="https://i.pravatar.cc/200?img=14" alt="Player 4">
       <h2>Player Four</h2>
-      <button onclick="vote('p4')">Vote</button>
-      <p id="p4-votes">Votes: 0</p>
+      <p>Game ID: FF67890</p>
+      <p>Experience: 1 year</p>
+      <p>University ID: UNI004</p>
+      <button onclick="vote('player4')">Vote</button>
     </div>
   </main>
 
   <script>
-    document.getElementById("game-title").innerText =
-      "Voting for " + localStorage.getItem("selectedGame");
-
-    const votes = { p1: 0, p2: 0, p3: 0, p4: 0 };
+    document.getElementById("gameTitle").innerText =
+      "Voting - " + localStorage.getItem("selectedGame");
 
     function vote(player) {
-      votes[player]++;
-      document.getElementById(player + "-votes").innerText =
-        "Votes: " + votes[player];
+      if (localStorage.getItem("voted")) {
+        alert("You have already voted!");
+        return;
+      }
+      localStorage.setItem("voted", player);
+      alert("Thank you! Your vote for " + player + " has been recorded.");
+      document.querySelectorAll("button").forEach(btn => btn.disabled = true);
     }
   </script>
 </body>
